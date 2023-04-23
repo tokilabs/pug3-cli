@@ -4,7 +4,7 @@ Pug 3 CLI with many fixes and improvements
 
 [![NPM version](https://img.shields.io/npm/v/@tokilabs/pug3-cli.svg)](https://www.npmjs.org/package/@tokilabs/pug3-cli)
 
-**@tokilabs/pug-cli** is a CLI for running [Pug](https://pugjs.org/), updated to Pug 3.0.2. It's a fork of the original [pug-cli](https://www.npmjs.com/package/pug-cli), which still uses PUG 2.
+**@tokilabs/pug3-cli** is a CLI for running [Pug](https://pugjs.org/), updated to Pug 3.0.2. It's a fork of the original [pug-cli](https://www.npmjs.com/package/pug-cli), which still uses PUG 2.
 
 ## Usage
 
@@ -89,7 +89,7 @@ $ pug3 -O options.yaml foo.pug
 
 ### Global installation
 
-    npm install -g @tokilabs/pug-cli
+    npm install -g @tokilabs/pug3-cli
 
 Use --help to learn how to use it
 
@@ -97,7 +97,7 @@ Use --help to learn how to use it
 
 ### Local installation
 
-    yarn add -D install @tokilabs/pug-cli
+    yarn add -D install @tokilabs/pug3-cli
 
 Run with yarn:
 
@@ -108,6 +108,15 @@ Run with yarn:
 The original project this was forked from:
 
 - [github.com/pugjs/pug-cli](https://github.com/pugjs/pug-cli)
+
+## Thank You!
+
+This fork started by merging the contributions of the fellas below:
+
+- [@anduh](https://github.com/anduh)
+- [@anthony-tron](https://github.com/anthony-tron)
+- [@lazdmx](https://github.com/lazdmx)
+- [@svallory](https://github.com/svallory)
 
 ## License
 
