@@ -93,9 +93,10 @@ var pugOptions = cmdOptions.obj ? parseObj(cmdOptions.obj) : {};
  * searched first.
  */
 function parseObj(input) {
-	let err = `PARSING ${input}\n`;
+	let err = `PARSING ${JSON.stringify(input)}\n`;
 	try {
 		const resolved = path.resolve(input);
+		delete require[resolved]; // delete cache
 		return require(resolved);
 	} catch (e) {
 		err += `Require didn't work for ${input}: ${e}\n`;
@@ -168,33 +169,28 @@ var render = cmdOptions.watch ? tryRender : renderFile;
 if (files.length) {
 	consoleLog();
 
+	// If we are running in watch mode
 	if (cmdOptions.watch) {
+		process.on("SIGINT", function () {
+			process.exit(1);
+		});
+
+		// and watch the configuration file for changes
 		if (cmdOptions.obj && fs.existsSync(cmdOptions.obj)) {
 			fs.watchFile(cmdOptions.obj, { persistent: true, interval: 200 }, function () {
-				consoleLog("  " + chalk.yellow(cmdOptions.obj) + " " + chalk.gray("changed"));
+				consoleLog(chalk.gray("File ") + chalk.yellow(cmdOptions.obj) + " " + chalk.gray("changed"));
 
-				// update object without losing previous data
-				Object.assign(pugOptions, parseObj(pugOptions));
+				// update the options object
+				pugOptions = parseObj(cmdOptions.obj);
 
-				// then update all files
-				for (const [path, bases] of Object.entries(watchList)) {
-					if (watchList.hasOwnProperty(path)) {
-						bases.forEach(render);
-					}
-				}
+				files.forEach(render);
 			});
 
 			debug.watched("  " + chalk.gray("watching") + " " + chalk.yellow(cmdOptions.obj));
 		}
-
-		process.on("SIGINT", function () {
-			process.exit(1);
-		});
 	}
-	files.forEach(function (file) {
-		render(file);
-	});
-	// stdio
+
+	files.forEach(render);
 } else {
 	stdin();
 }
@@ -226,6 +222,7 @@ function watchFile(path, base, rootPath) {
 	debug.watched(log);
 	watchList[path] = [base];
 	fs.watchFile(path, { persistent: true, interval: 200 }, function (curr, prev) {
+		consoleLog(`\n${chalk.gray("File")} ${chalk.yellow(path)} ${chalk.gray("changed")}`);
 		// File doesn't exist anymore. Keep watching.
 		if (curr.mtime.getTime() === 0) return;
 		// istanbul ignore if
@@ -265,10 +262,11 @@ function tryRender(path, rootPath) {
 function stdin() {
 	var buf = "";
 	process.stdin.setEncoding("utf8");
-	process.stdin.on("data", function (chunk) {
-		buf += chunk;
-	});
+
 	process.stdin
+		.on("data", function (chunk) {
+			buf += chunk;
+		})
 		.on("end", function () {
 			var output;
 			if (pugOptions.client) {
@@ -278,6 +276,9 @@ function stdin() {
 				var output = fn(pugOptions);
 			}
 			process.stdout.write(output);
+		})
+		.on("error", function (err) {
+			console.error("Error in stdin ", err);
 		})
 		.resume();
 }
@@ -297,6 +298,7 @@ function renderFile(path, rootPath) {
 	var stat = fs.statSync(path);
 	// Found pug file
 	if (stat.isFile() && isPug.test(path) && !isIgnored.test(path)) {
+		debug.render(`Rendering file ${chalk.green(path)} with rootPath ${rootPath}`);
 		// Try to watch the file if needed. watchFile takes care of duplicates.
 		if (cmdOptions.watch) watchFile(path, null, rootPath);
 		if (cmdOptions.nameAfterFile) {
@@ -334,6 +336,11 @@ function renderFile(path, rootPath) {
 			// prepend output directory
 			if (rootPath) {
 				// replace the rootPath of the resolved path with output directory
+				if (typeof rootPath !== "string" || typeof path !== "string") {
+					const e = new Error(`rootPath and path must be strings. Receive rootPath ${rootPath} and ${path}`);
+					console.error(e.message, e.stack);
+					process.exit(1);
+				}
 				path = relative(rootPath, path);
 			} else {
 				// if no rootPath handling is needed
@@ -345,7 +352,7 @@ function renderFile(path, rootPath) {
 		mkdirp.sync(dir);
 		var output = pugOptions.client ? fn : fn(pugOptions);
 		fs.writeFileSync(path, output);
-		debug.render("  " + chalk.gray("rendered") + " " + chalk.cyan("%s"), normalize(path));
+		consoleLog("  " + chalk.gray("rendered") + " " + chalk.cyan("%s"), normalize(path));
 		// Found directory
 	} else if (stat.isDirectory()) {
 		var files = fs.readdirSync(path);
