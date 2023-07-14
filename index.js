@@ -309,7 +309,7 @@ function renderFile(path, rootPath) {
 		pugOptions.filename = page.path;
 		if (page.data.layout) {
 			page.extended = `extends ${pugOptions.includes}/${page.data.layout}
-    ${page.content}`;
+${page.content}`;
 		} else {
 			page.extended = page.content;
 		}
