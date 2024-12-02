@@ -5,7 +5,7 @@
 		"access": "public",
 		"registry": "https://registry.npmjs.org/"
 	},
-	"description": "A cli for Pug 3.0.2 with many fixes and improvements",
+	"description": "A cli for Pug 3.0.3 with many fixes and improvements",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/tokilabs/pug3-cli.git"
@@ -44,7 +44,7 @@
 		"precoverage": "rimraf coverage && rimraf cov-pt*",
 		"coverage": "istanbul cover --report none --dir cov-pt0 node_modules/mocha/bin/_mocha -- -R dot",
 		"postcoverage": "istanbul report --include cov-pt\\*/coverage.json && rimraf cov-pt*",
-		"man": "man ./man/pug3.0.2"
+		"man": "man ./man/pug3.0.3"
 	},
 	"license": "MIT"
 }

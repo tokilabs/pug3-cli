@@ -4,7 +4,7 @@ Pug 3 CLI with many fixes and improvements
 
 [![NPM version](https://img.shields.io/npm/v/@tokilabs/pug3-cli.svg)](https://www.npmjs.org/package/@tokilabs/pug3-cli)
 
-**@tokilabs/pug3-cli** is a CLI for running [Pug](https://pugjs.org/), updated to Pug 3.0.2. It's a fork of the original [pug-cli](https://www.npmjs.com/package/pug-cli), which still uses PUG 2.
+**@tokilabs/pug3-cli** is a CLI for running [Pug](https://pugjs.org/), updated to Pug 3.0.3. It's a fork of the original [pug-cli](https://www.npmjs.com/package/pug-cli), which still uses PUG 2.
 
 ## Usage
 
