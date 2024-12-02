@@ -1,50 +1,51 @@
 {
-	"name": "@tokilabs/pug3-cli",
-	"version": "3.0.1",
-	"publishConfig": {
-		"access": "public",
-		"registry": "https://registry.npmjs.org/"
-	},
-	"description": "A cli for Pug 3.0.3 with many fixes and improvements",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/tokilabs/pug3-cli.git"
-	},
-	"directories": {
-		"man": "man"
-	},
-	"bin": {
-		"pug3": "./index.js"
-	},
-	"preferGlobal": true,
-	"keywords": [
-		"pug",
-		"pug3",
-		"pug-cli",
-		"pug3-cli",
-		"html",
-		"cli"
-	],
-	"dependencies": {
-		"chalk": "^4.1.1",
-		"commander": "^7.2.0",
-		"debug": "^4.3.4",
-		"gray-matter": "^4.0.2",
-		"js-yaml": "^4.1.0",
-		"mkdirp": "^1.0.4",
-		"pug": "^3.0.3"
-	},
-	"devDependencies": {
-		"istanbul": "*",
-		"mocha": "*",
-		"rimraf": "*"
-	},
-	"scripts": {
-		"test": "mocha -R spec --bail",
-		"precoverage": "rimraf coverage && rimraf cov-pt*",
-		"coverage": "istanbul cover --report none --dir cov-pt0 node_modules/mocha/bin/_mocha -- -R dot",
-		"postcoverage": "istanbul report --include cov-pt\\*/coverage.json && rimraf cov-pt*",
-		"man": "man ./man/pug3.0.3"
-	},
-	"license": "MIT"
+  "name": "@tokilabs/pug3-cli",
+  "version": "3.0.1",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "description": "A cli for Pug 3.0.3 with many fixes and improvements",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokilabs/pug3-cli.git"
+  },
+  "directories": {
+    "man": "man"
+  },
+  "bin": {
+    "pug3": "./index.js"
+  },
+  "preferGlobal": true,
+  "keywords": [
+    "pug",
+    "pug3",
+    "pug-cli",
+    "pug3-cli",
+    "html",
+    "cli"
+  ],
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^12.1.0",
+    "debug": "^4.3.7",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "mkdirp": "^3.0.1",
+    "pkg.json": "^2.0.8",
+    "pug": "^3.0.3"
+  },
+  "devDependencies": {
+    "mocha": "^11.0.1",
+    "nyc": "^17.1.0",
+    "rimraf": "^6.0.1"
+  },
+  "scripts": {
+    "test": "mocha -R spec --bail",
+    "precoverage": "rimraf --no-glob coverage && rimraf --no-glob cov-pt*",
+    "coverage": "nyc --reporter=none --report-dir=cov-pt0 mocha -- -R dot",
+    "postcoverage": "nyc report --include=cov-pt*/coverage.json && rimraf --no-glob cov-pt*",
+    "man": "man ./man/pug3.0.3"
+  },
+  "license": "MIT"
 }
